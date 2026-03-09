@@ -43,8 +43,9 @@ spec:
               drop:
                 - ALL
             privileged: false
-            readOnlyRootFilesystem: true
-          image: gcr.io/google-samples/microservices-demo/frontend:v0.8.0
+            readOnlyRootFilesystem: false
+          image: raghul09/frontend:latest
+          imagePullPolicy: Always
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -104,6 +105,16 @@ spec:
             limits:
               cpu: 200m
               memory: 128Mi
+          volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+            - name: nginx-run
+              mountPath: /run
+      volumes:
+        - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-run
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
